@@ -18,7 +18,7 @@ def beat(time):                  #与mido的拍子互换
     time = 1/time
     return time
 
-def myin(fu,pai,time=120,chord=None,bef=None,yue=2):   #和声版
+def myin(fu,pai,time=120,chord=None,bef=None,note="geng",yue=2):   #和声版
     pig = int(beat(time))
     for i in range(len(pai)):
         if type(pai[i]) == list:
@@ -34,34 +34,94 @@ def myin(fu,pai,time=120,chord=None,bef=None,yue=2):   #和声版
                 yin(fu[i],pai[i]*pig,qi=yue)
             else:
                 if chord == "dasan":     #大三和弦
-                    fu[i] = b_three(fu[i])
+                    if note == "geng":
+                        fu[i] = b_three(fu[i])
+                    elif note == "zhong":
+                        fu[i] = b_three(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = b_three(zhong=fu[i])
                 elif chord == "xiaosan":    #小三（没骂人）
-                    fu[i] = s_three(fu[i])
+                    if note == "geng":
+                        fu[i] = s_three(fu[i])
+                    elif note == "zhong":
+                        fu[i] = s_three(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = s_three(zhong=fu[i])
                 elif chord == "zengsan":    #增三
-                    fu[i] = z_three(fu[i])
+                    if note == "geng":
+                        fu[i] = z_three(fu[i])
+                    elif note == "zhong":
+                        fu[i] = z_three(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = z_three(zhong=fu[i])
                 elif chord == "jiansan":    #减三
-                    fu[i] = j_three(fu[i])
+                    if note == "geng":
+                        fu[i] = j_three(fu[i])
+                    elif note == "zhong":
+                        fu[i] = j_three(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = j_three(zhong=fu[i])
                 elif chord == "dasi":      #大四
-                    fu[i] = b_four(fu[i])
+                    if note == "geng":
+                        fu[i] = b_four(fu[i])
+                    elif note == "zhong":
+                        fu[i] = b_four(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = b_four(zhong=fu[i])
                 elif chord == "xiaosi":    #小四(没骂人)
-                    fu[i] = s_four(fu[i])
+                    if note == "geng":
+                        fu[i] = s_four(fu[i])
+                    elif note == "zhong":
+                        fu[i] = s_four(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = s_four(zhong=fu[i])
                 elif chord == "zengsi":    #增四
-                    fu[i] = z_four(fu[i])
+                    if note == "geng":
+                        fu[i] = z_four(fu[i])
+                    elif note == "zhong":
+                        fu[i] = z_four(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = z_four(zhong=fu[i])
                 elif chord == "jiansi":    #减四
-                    fu[i] = j_four(fu[i])
+                    if note == "geng":
+                        fu[i] = j_four(fu[i])
+                    elif note == "zhong":
+                        fu[i] = j_four(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = j_four(zhong=fu[i])
                 elif chord == "daliu":     #大四六
-                    fu[i] = b_six(fu[i])
+                    if note == "geng":
+                        fu[i] = b_six(fu[i])
+                    elif note == "zhong":
+                        fu[i] = b_six(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = b_six(zhong=fu[i])
                 elif chord == "xiaoliu":   #小四六
-                    fu[i] = s_six(fu[i])
+                    if note == "geng":
+                        fu[i] = s_six(fu[i])
+                    elif note == "zhong":
+                        fu[i] = s_six(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = s_six(zhong=fu[i])
                 elif chord == "zengliu":   #增四六
-                    fu[i] = z_six(fu[i])
+                    if note == "geng":
+                        fu[i] = z_six(fu[i])
+                    elif note == "zhong":
+                        fu[i] = z_six(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = z_six(zhong=fu[i])
                 elif chord == "jianliu":   #减四六
-                    fu[i] = j_six(fu[i])
+                    if note == "geng":
+                        fu[i] = j_six(fu[i])
+                    elif note == "zhong":
+                        fu[i] = j_six(zhong=fu[i])
+                    elif note == "wu":
+                        fu[i] = j_six(zhong=fu[i])
                 for x in range(len(fu[i])):
                     if bef == None:
-                        yin(fu[i][x],pai[i]*pig,unit=tra[x],qi=yue)
+                        yin(fu[i][x],int(pai[i]*pig),unit=tra[x],qi=yue)
                     if bef:
-                        yin(fu[i][x],pai[i]*pig,bef[i],tra[x],qi=yue)
+                        yin(fu[i][x],int(pai[i]*pig),bef[i],tra[x],qi=yue)
 
 def myin1(fu,pai,time=120,bef=None,yue=2):   #多声部版
     pig = int(beat(time))
