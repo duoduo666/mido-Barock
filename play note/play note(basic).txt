@@ -17,22 +17,39 @@ def beat(time):                  #与mido的拍子互换
     return time
 
 
-def myin(fu,pai,time,qian=None,yue=2):   #不同音，不同节奏
+def myin1(fu,pai,time=120,bef=None,yue=2):   #多声部版
     pig = int(beat(time))
+    for i in range(len(pai)):
+        if type(pai[i]) == list:
+            for j in range(len(pai[i])):
+                if bef == None:
+                    yin(fu[i][j],pai[i][j]*pig,unit=tra[j],qi=yue)
+                elif bef and len(bef) == 1:
+                    yin(fu[i][j],pai[i][j]*pig,bef,unit=tra[j],qi=yue)
+                else:
+                    yin(fu[i][j],pai[i][j]*pig,bef[i][j],unit=tra[j],qi=yue)
+        else:
+            if bef == None:
+                yin(fu[i],pai[i]*pig,qi=yue)
+            elif bef and len(bef) == 1:
+                yin(fu[i],pai[i]*pig,bef,qi=yue)
+            else:
+                yin(fu[i],pai[i]*pig,bef[i],qi=yue)
+
+def myin2(fu,pai,time,qian=None,yue=2):   #最老版，单声部
+    pig = int(beat(time))                 
     if qian == None:
         x = len(pai)
         for i in range(x):
             if type(fu[i]) == str:
                 fu[i] = num(fu[i])
             yin(fu[i],pai[i]*pig,qi=yue)
-    
     elif qian and len(qian) == 1:
         x = len(pai)
         for i in range(x):
             if type(fu[i]) == str:
                 fu[i] = num(fu[i])
             yin(fu[i],pai[i]*pig,qian,qi=yue)
-    
     else:
         x = len(pai)
         for i in range(x):
