@@ -6,16 +6,62 @@ mid = MidiFile()
 track = MidiTrack()
 mid.tracks.append(track)
 
-def yin(yin,pai,qian=0,tong=0,liang=64,qi=2):              #yin是指哪个音，pai是指时间（节拍），qian是noteon里的time，liang是指音量，tong是通道，
-    track.append(Message('program_change',channel=tong,program=qi,time=0))  #pi是乐器 默认钢琴（2）
-    track.append(Message('note_on', note=yin, velocity=liang, time=qian,channel=tong))  #音开始
-    track.append(Message('note_off', note=yin, velocity=liang, time=pai,channel=tong))
+def yin(yin,pai,qian=0,unit=track,tong=0,liang=64,qi=2):              #yin是指哪个音，pai是指时间（节拍），qian是noteon里的time，liang是指音量，tong是通道，
+    if type(yin)== str:
+        yin = num(yin)
+    unit.append(Message('program_change',channel=0,program=qi,time=0))  #pi是乐器 默认钢琴（2）
+    unit.append(Message('note_on', note=yin, velocity=liang, time=qian,channel=tong))  #音开始
+    unit.append(Message('note_off', note=yin, velocity=liang, time=pai,channel=tong))
 
 def beat(time):                  #与mido的拍子互换
     time /= 60 * 1000
     time = 1/time
     return time
 
+def myin(fu,pai,time=120,chord=None,bef=None,yue=2):   #和声版
+    pig = int(beat(time))
+    for i in range(len(pai)):
+        if type(pai[i]) == list:
+            for j in range(len(pai[i])):
+                if bef == None:
+                    yin(fu[i][j],round(pai[i][j]*pig),unit=tra[j],qi=yue)
+                elif bef and len(bef) == 1:
+                    yin(fu[i][j],round(pai[i][j]*pig),bef,unit=tra[j],qi=yue)
+                else:
+                    yin(fu[i][j],round(pai[i][j]*pig),bef[i][j],unit=tra[j],qi=yue)
+        else:
+            if chord == None:
+                yin(fu[i],pai[i]*pig,qi=yue)
+            else:
+                if chord == "dasan":     #大三和弦
+                    fu[i] = b_three(fu[i])
+                elif chord == "xiaosan":    #小三（没骂人）
+                    fu[i] = s_three(fu[i])
+                elif chord == "zengsan":    #增三
+                    fu[i] = z_three(fu[i])
+                elif chord == "jiansan":    #减三
+                    fu[i] = j_three(fu[i])
+                elif chord == "dasi":      #大四
+                    fu[i] = b_four(fu[i])
+                elif chord == "xiaosi":    #小四(没骂人)
+                    fu[i] = s_four(fu[i])
+                elif chord == "zengsi":    #增四
+                    fu[i] = z_four(fu[i])
+                elif chord == "jiansi":    #减四
+                    fu[i] = j_four(fu[i])
+                elif chord == "daliu":     #大四六
+                    fu[i] = b_six(fu[i])
+                elif chord == "xiaoliu":   #小四六
+                    fu[i] = s_six(fu[i])
+                elif chord == "zengliu":   #增四六
+                    fu[i] = z_six(fu[i])
+                elif chord == "jianliu":   #减四六
+                    fu[i] = j_six(fu[i])
+                for x in range(len(fu[i])):
+                    if bef == None:
+                        yin(fu[i][x],pai[i]*pig,unit=tra[x],qi=yue)
+                    if bef:
+                        yin(fu[i][x],pai[i]*pig,bef[i],tra[x],qi=yue)
 
 def myin1(fu,pai,time=120,bef=None,yue=2):   #多声部版
     pig = int(beat(time))
@@ -41,18 +87,13 @@ def myin2(fu,pai,time,qian=None,yue=2):   #最老版，单声部
     if qian == None:
         x = len(pai)
         for i in range(x):
-            if type(fu[i]) == str:
-                fu[i] = num(fu[i])
             yin(fu[i],pai[i]*pig,qi=yue)
     elif qian and len(qian) == 1:
         x = len(pai)
         for i in range(x):
-            if type(fu[i]) == str:
-                fu[i] = num(fu[i])
             yin(fu[i],pai[i]*pig,qian,qi=yue)
     else:
         x = len(pai)
         for i in range(x):
-            if type(fu[i]) == str:
-                fu[i] = num(fu[i])
             yin(fu[i],pai[i]*pig,qian[i],qi=yue)
+                
